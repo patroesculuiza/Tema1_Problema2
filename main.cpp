@@ -4,13 +4,11 @@
 #include "complex.h"
 using namespace std;
 
-
-
 istream &operator>>(istream &in,numere_complexe &ob)
 {
 
     in>>ob.real>>ob.imaginar;
-    return cin;
+    return in;
 
 }
 ostream &operator<<(ostream &out,const numere_complexe &ob)
@@ -19,6 +17,14 @@ ostream &operator<<(ostream &out,const numere_complexe &ob)
     out<<ob.real<<" "<<ob.imaginar<<"i"<<endl;
     return out;
 
+}
+numere_complexe numere_complexe::operator=(const numere_complexe &ob)
+{
+    
+    real=ob.real;
+    imaginar=ob.imaginar;
+    return *this;
+    
 }
 numere_complexe numere_complexe::operator+(const numere_complexe &ob)
 {
@@ -51,25 +57,77 @@ v_complex::v_complex()
 }
 v_complex::v_complex(const v_complex & ob)//constr copiere
 {
+
+    this->dim=ob.dim;
+    vector=new numere_complexe[ob.dim];
+    for(int i = 0 ; i < dim ; i++)
+    {
+        vector[i]=ob.vector[i];
+    }
+    vector_modul=new double[ob.dim];
+     for(int i = 0 ; i < dim ; i++)
+    {
+        vector_modul[i]=ob.vector_modul[i];
+    }
+    return *this;
+
+}
+v_complex::v_complex(const v_complex & ob)//constr copiere
+{
+  if(this!=&ob){
+    this->dim=ob.dim;
+    vector=new numere_complexe[ob.dim];
+    for(int i = 0 ; i < dim ; i++)
+    {
+        vector[i]=ob.vector[i];
+    }
+    vector_modul=new double[ob.dim];
+     for(int i = 0 ; i < dim ; i++)
+    {
+        vector_modul[i]=ob.vector_modul[i];
+    }
+        }
+  
+
+}
+
+v_complex v_complex::operator=(const v_complex &ob)
+{
     if(this!=&ob)
     {
-    this->dim=ob.dim;
-    this->vector=ob.vector;
+        if(vector!=NULL) 
+        {
+            delete[]vector;
+            delete[]vector_modul;
+        }
+        this->dim=ob.dim;
+    vector=new numere_complexe[ob.dim];
+    for(int i = 0 ; i < dim ; i++)
+    {
+        vector[i]=ob.vector[i];
     }
-
+    vector_modul=new double[ob.dim];
+     for(int i = 0 ; i < dim ; i++)
+    {
+        vector_modul[i]=ob.vector_modul[i];
+    }
+        
+    }
+    return *this;
 }
 v_complex::~v_complex()
 {
-   //this->dim=0;
+  if(dim!=0)
+   {
    delete[] this->vector;
-   this->vector=NULL;
+   delete[] this->vector_modul;
+   }
 }
 istream &operator>>(istream &in,v_complex &ob)
 {
 
   in>>ob.dim;
   ob.vector = new numere_complexe[ob.dim];
-  if(!ob.vector) { bad_alloc ba; throw ba; }
   int i;
   for(i = 0 ; i < ob.dim ; i++)
   {
@@ -93,7 +151,6 @@ void v_complex::set_modul(v_complex &ob)
 {
 
   ob.vector_modul=new double[ob.dim];
-  if(!ob.vector_modul) { bad_alloc ba; throw ba; }
     int i;
     for(i = 0 ; i < ob.dim ; i++)
     {
