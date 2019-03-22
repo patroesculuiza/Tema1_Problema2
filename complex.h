@@ -30,5 +30,7 @@ class v_complex
     int verif(const v_complex &ob1);
     v_complex(const v_complex &ob);
     ~v_complex();
+    
+    v_complex operator=(const v_complex & ob);
 };
 #endif // COMPLEX_H_INCLUDED
